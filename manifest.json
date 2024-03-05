@@ -1,0 +1,11 @@
+{
+  "id": "obsidian-browser-interface-plugin",
+  "name": "Obsidian Browser Interface Plugin",
+  "version": "1.0.0",
+  "minAppVersion": "0.15.0",
+  "description": "A plugin for Obsidian that allows you to interact with the browser",
+  "author": "Jason Lieb",
+  "authorUrl": "https://github.com/jason-lieb/",
+  "fundingUrl": "",
+  "isDesktopOnly": true
+}
