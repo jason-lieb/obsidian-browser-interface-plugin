@@ -1,82 +1,91 @@
-import {App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting} from 'obsidian'
+import {Editor, MarkdownView, Notice, Plugin} from 'obsidian'
+import {Tab, getTabsFromMarkdown, isDirectoryValid, saveJson} from './src/file-system'
+import {BrowserInterfaceSettingTab} from 'src/settings'
 
-interface ObsidianBrowserInterfaceSettings {
-  mySetting: string
+interface BrowserInterfaceSettings {
+  browserDirectory: string | undefined
 }
 
-const DEFAULT_SETTINGS: ObsidianBrowserInterfaceSettings = {
-  mySetting: 'default',
+const DEFAULT_SETTINGS: BrowserInterfaceSettings = {
+  browserDirectory: 'Browser', // set default to undefined in production
 }
 
-export default class ObsidianBrowserInterfacePlugin extends Plugin {
-  settings: ObsidianBrowserInterfaceSettings
+export default class BrowserInterfacePlugin extends Plugin {
+  settings: BrowserInterfaceSettings
 
   async onload() {
+    console.log('Loading Browser Interface Plugin...') // Remove for production
     await this.loadSettings()
-
-    // This creates an icon in the left ribbon.
-    const ribbonIconEl = this.addRibbonIcon('dice', 'Sample Plugin', (evt: MouseEvent) => {
-      // Called when the user clicks the icon.
-      new Notice('This is a notice!')
-    })
-    // Perform additional things with the ribbon
-    ribbonIconEl.addClass('my-plugin-ribbon-class')
-
-    // This adds a status bar item to the bottom of the app. Does not work on mobile apps.
-    const statusBarItemEl = this.addStatusBarItem()
-    statusBarItemEl.setText('Status Bar Text')
-
-    // This adds a simple command that can be triggered anywhere
-    this.addCommand({
-      id: 'open-sample-modal-simple',
-      name: 'Open sample modal (simple)',
-      callback: () => {
-        new MyModal(this.app).open()
-      },
-    })
-    // This adds an editor command that can perform some operation on the current editor instance
-    this.addCommand({
-      id: 'sample-editor-command',
-      name: 'Sample editor command',
-      editorCallback: (editor: Editor, view: MarkdownView) => {
-        console.log(editor.getSelection())
-        editor.replaceSelection('Sample Editor Command')
-      },
-    })
-    // This adds a complex command that can check whether the current state of the app allows execution of the command
-    this.addCommand({
-      id: 'open-sample-modal-complex',
-      name: 'Open sample modal (complex)',
-      checkCallback: (checking: boolean) => {
-        // Conditions to check
-        const markdownView = this.app.workspace.getActiveViewOfType(MarkdownView)
-        if (markdownView) {
-          // If checking is true, we're simply "checking" if the command can be run.
-          // If checking is false, then we want to actually perform the operation.
-          if (!checking) {
-            new MyModal(this.app).open()
-          }
-
-          // This command will only show up in Command Palette when the check function returns true
-          return true
-        }
-      },
-    })
-
-    // This adds a settings tab so the user can configure various aspects of the plugin
-    this.addSettingTab(new SettingTab(this.app, this))
-
-    // If the plugin hooks up any global DOM events (on parts of the app that doesn't belong to this plugin)
-    // Using this function will automatically remove the event listener when this plugin is disabled.
-    this.registerDomEvent(document, 'click', (evt: MouseEvent) => {
-      console.log('click', evt)
-    })
-
-    // When registering intervals, this function will automatically clear the interval when the plugin is disabled.
-    this.registerInterval(window.setInterval(() => console.log('setInterval'), 5 * 60 * 1000))
+    this.setUpCommands()
+    // this.loadMetaBindTemplates()
+    this.addSettingTab(new BrowserInterfaceSettingTab(this.app, this))
   }
 
-  onunload() {}
+  async loadMetaBindTemplates() {
+    // @ts-ignore
+    const metaBind = this.app.plugins.plugins['obsidian-meta-bind-plugin']
+    console.log({metaBind})
+    if (!metaBind) return
+
+    const templates = [
+      {
+        id: 'browser-interface-extension-open-window',
+        label: 'Open',
+        style: 'primary',
+        actions: [{type: 'command', command: 'browser-interface-plugin:open-window'}],
+      },
+      {
+        id: 'browser-interface-extension-open-tab',
+        label: 'Open',
+        style: 'primary',
+        actions: [{type: 'command', command: 'browser-interface-plugin:open-tab'}],
+      },
+      {
+        id: 'browser-interface-extension-delete-tab',
+        label: 'Delete',
+        style: 'danger',
+        actions: [{type: 'command', command: 'browser-interface-plugin:delete-tab'}],
+      },
+    ]
+
+    metaBind.api.buttonManager.setButtonTemplates(templates)
+  }
+
+  setUpCommands() {
+    // Change these commands to use checkCallback instead of editorCallback?
+    this.addCommand({
+      id: 'open-window',
+      name: 'Open Window',
+      editorCallback: this.open(getTabsFromMarkdown),
+    })
+
+    this.addCommand({
+      id: 'open-tab',
+      name: 'Open Tab',
+      // editorCallback: this.open(getTabFromMarkdown),
+    })
+  }
+
+  open(getTabsFn: (markdown: string) => Tab[]): (editor: Editor, view: MarkdownView) => void {
+    return (editor: Editor, view: MarkdownView) => {
+      const directory = this.getBrowserDirectory()
+
+      const tabs = getTabsFn(editor.getValue())
+      saveJson(JSON.stringify(tabs), directory)
+      // if (view.file !== null) this.app.vault.delete(view.file)
+    }
+  }
+
+  onunload() {
+    this.tearDownQueue
+  }
+
+  tearDownQueue() {
+    const queue = this.app.vault.getFileByPath(
+      `${this.settings.browserDirectory}/browser-interface-open-queue.json`
+    )
+    if (queue) this.app.vault.delete(queue)
+  }
 
   async loadSettings() {
     this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData())
@@ -85,48 +94,16 @@ export default class ObsidianBrowserInterfacePlugin extends Plugin {
   async saveSettings() {
     await this.saveData(this.settings)
   }
-}
 
-class MyModal extends Modal {
-  constructor(app: App) {
-    super(app)
-  }
+  getBrowserDirectory() {
+    if (
+      this.settings.browserDirectory === undefined ||
+      !isDirectoryValid(this.settings.browserDirectory)
+    ) {
+      new Notice('The directory does not exist. Please try again.')
+      throw new Error('The directory does not exist. Please try again.')
+    }
 
-  onOpen() {
-    const {contentEl} = this
-    contentEl.setText('Woah!')
-  }
-
-  onClose() {
-    const {contentEl} = this
-    contentEl.empty()
-  }
-}
-
-class SettingTab extends PluginSettingTab {
-  plugin: ObsidianBrowserInterfacePlugin
-
-  constructor(app: App, plugin: ObsidianBrowserInterfacePlugin) {
-    super(app, plugin)
-    this.plugin = plugin
-  }
-
-  display(): void {
-    const {containerEl} = this
-
-    containerEl.empty()
-
-    new Setting(containerEl)
-      .setName('TEST')
-      .setDesc("It's a secret")
-      .addText(text =>
-        text
-          .setPlaceholder('Enter your secret')
-          .setValue(this.plugin.settings.mySetting)
-          .onChange(async value => {
-            this.plugin.settings.mySetting = value
-            await this.plugin.saveSettings()
-          })
-      )
+    return this.settings.browserDirectory
   }
 }
