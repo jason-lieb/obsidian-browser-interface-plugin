@@ -12,14 +12,13 @@ interface BrowserInterfaceSettings {
 }
 
 const DEFAULT_SETTINGS: BrowserInterfaceSettings = {
-  browserDirectory: 'Browser', // set default to undefined in production
+  browserDirectory: undefined,
 }
 
 export default class BrowserInterfacePlugin extends Plugin {
   settings: BrowserInterfaceSettings
 
   async onload() {
-    console.log('Loading Browser Interface Plugin...') // Remove for production
     await this.loadSettings()
     this.setUpCommands()
     this.loadMetaBindTemplates()
