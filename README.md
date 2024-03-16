@@ -16,6 +16,8 @@ Until the obsidian plugin is approved, the only way to install it will be manual
 
 3. Build the project with `npm run build`
 
+4. Set up settings in obsidian.
+
 ### Limitations
 
 This plugin currently only has the essential functions. Also, the `Open Tab` and `Delete Tab` work by clicking on the row of the desired tab and then clicking the associated button.
