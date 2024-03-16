@@ -22,7 +22,7 @@ export class BrowserInterfaceSettingTab extends PluginSettingTab {
 
     if (this.plugin.settings.browserDirectory) {
       directorySetting
-        .addText(text => text.setValue(this.plugin.settings.browserDirectory || ''))
+        .addText(text => text.setValue(this.plugin.settings.browserDirectory ?? ''))
         .setDisabled(true)
       directorySetting.addButton(button => {
         button.setButtonText('Clear Directory').onClick(async () => {
@@ -37,7 +37,7 @@ export class BrowserInterfaceSettingTab extends PluginSettingTab {
         .addText(text =>
           text
             .setPlaceholder('Enter the directory path')
-            .setValue(this.plugin.settings.browserDirectory || '')
+            .setValue(this.plugin.settings.browserDirectory ?? '')
             .onChange(async value => {
               this.plugin.settings.browserDirectory = value
             })

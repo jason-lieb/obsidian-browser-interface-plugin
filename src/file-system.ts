@@ -1,4 +1,4 @@
-import {Editor, MarkdownView, TFolder} from 'obsidian'
+import {TFolder} from 'obsidian'
 
 export type Tab = {
   favIconUrl: string | undefined
