@@ -1,6 +1,6 @@
 import {App, Notice, PluginSettingTab, Setting} from 'obsidian'
 import BrowserInterfacePlugin from 'main'
-import {isDirectoryValid} from './file-system'
+import {isDirectoryValid} from './utils'
 
 export class BrowserInterfaceSettingTab extends PluginSettingTab {
   plugin: BrowserInterfacePlugin

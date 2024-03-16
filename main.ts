@@ -1,11 +1,6 @@
 import {Editor, MarkdownView, Notice, Plugin} from 'obsidian'
-import {
-  getTabFromMarkdown,
-  getTabsFromMarkdown,
-  isDirectoryValid,
-  saveJson,
-} from './src/file-system'
-import {BrowserInterfaceSettingTab} from './src/settings'
+import {getTabFromMarkdown, getTabsFromMarkdown, isDirectoryValid, saveJson} from './utils'
+import {BrowserInterfaceSettingTab} from './settings'
 
 interface BrowserInterfaceSettings {
   browserDirectory: string | undefined
