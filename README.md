@@ -10,13 +10,15 @@ The Obsidian Browser Interface Plugin is dependent on the Meta Bind plugin. Also
 
 Until the obsidian plugin is approved, the only way to install it will be manually building it.
 
-1. Clone this repository to your local machine in your obsidian vault in the `.obsidian/plugins/` folder using `git clone https://github.com/jason-lieb/obsidian-browser-interface-plugin.git`.
+1. It is recommended to install the `obsidian-meta-bind-plugin` before installing this plugin.
 
-2. Install the dependencies with `npm i`
+2. Clone this repository to your local machine in your obsidian vault in the `.obsidian/plugins/` folder using `git clone https://github.com/jason-lieb/obsidian-browser-interface-plugin.git`.
 
-3. Build the project with `npm run build`
+3. Install the dependencies with `npm i`
 
-4. Set up settings in obsidian.
+4. Build the project with `npm run build`
+
+5. Set up settings in obsidian.
 
 ### Limitations
 
