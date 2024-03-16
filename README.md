@@ -21,3 +21,6 @@ Until the obsidian plugin is approved, the only way to install it will be manual
 ### Limitations
 
 This plugin currently only has the essential functions. Also, the `Open Tab` and `Delete Tab` work by clicking on the row of the desired tab and then clicking the associated button.
+
+### Screenshot
+![obsidian browser interface plugin screenshot](screenshot.png)
