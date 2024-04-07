@@ -1,7 +1,7 @@
 {
-  "id": "browser-interface-plugin",
-  "name": "Browser Interface Plugin",
-  "version": "1.0.1",
+  "id": "browser-interface",
+  "name": "Browser Interface",
+  "version": "1.0.2",
   "minAppVersion": "0.15.0",
   "description": "A plugin for Obsidian that allows you to interact with the browser",
   "author": "Jason Lieb",

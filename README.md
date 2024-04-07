@@ -6,6 +6,8 @@ This plugin displays the tabs saved from the chrome extension and creates button
 
 The Obsidian Browser Interface Plugin is dependent on the [Meta Bind plugin](https://github.com/mProjectsCode/obsidian-meta-bind-plugin). Also it is highly recommended to pair this plugin with the Advanced Tables plugin.
 
+If there is interest in a firefox-supported extension, one might be created in the future.
+
 ### Installation
 
 Until the obsidian plugin is approved, the only way to install it will be manually building it.
