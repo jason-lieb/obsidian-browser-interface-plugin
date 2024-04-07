@@ -10,7 +10,7 @@ const DEFAULT_SETTINGS: BrowserInterfaceSettings = {
   browserDirectory: undefined,
 }
 
-export default class BrowserInterfacePlugin extends Plugin {
+export default class BrowserInterface extends Plugin {
   settings: BrowserInterfaceSettings
 
   async onload() {

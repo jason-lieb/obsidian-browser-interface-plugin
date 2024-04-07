@@ -1,11 +1,11 @@
 import {App, Notice, PluginSettingTab, Setting} from 'obsidian'
-import BrowserInterfacePlugin from 'main'
+import BrowserInterface from 'main'
 import {isDirectoryValid} from './utils'
 
 export class BrowserInterfaceSettingTab extends PluginSettingTab {
-  plugin: BrowserInterfacePlugin
+  plugin: BrowserInterface
 
-  constructor(app: App, plugin: BrowserInterfacePlugin) {
+  constructor(app: App, plugin: BrowserInterface) {
     super(app, plugin)
     this.plugin = plugin
   }
@@ -13,9 +13,8 @@ export class BrowserInterfaceSettingTab extends PluginSettingTab {
   display() {
     const {containerEl} = this
     containerEl.empty()
-    containerEl.createEl('h2', {text: 'General Settings'})
     const directorySetting = new Setting(containerEl)
-      .setName('Browser Directory')
+      .setName('Browser directory')
       .setDesc(
         "Set the directory where the browser windows will be saved. This must be the same directory as the chrome extension's directory."
       )
