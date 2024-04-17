@@ -23,7 +23,10 @@ export default class BrowserInterface extends Plugin {
   async loadMetaBindTemplates() {
     // @ts-ignore
     const metaBind = this.app.plugins.plugins['obsidian-meta-bind-plugin']
-    if (!metaBind) return
+    if (!metaBind) {
+      new Notice('Please install the Meta Bind plugin.')
+      return
+    }
 
     type Template = {
       id?: string
@@ -35,21 +38,21 @@ export default class BrowserInterface extends Plugin {
     const templates: Template[] = [
       {
         id: 'browser-interface-extension-open-window',
-        label: 'Open Window',
+        label: 'Open window',
         style: 'primary',
-        actions: [{type: 'command', command: 'browser-interface-plugin:open-window'}],
+        actions: [{type: 'command', command: 'browser-interface:open-window'}],
       },
       {
         id: 'browser-interface-extension-open-tab',
-        label: 'Open Tab',
+        label: 'Open tab',
         style: 'primary',
-        actions: [{type: 'command', command: 'browser-interface-plugin:open-tab'}],
+        actions: [{type: 'command', command: 'browser-interface:open-tab'}],
       },
       {
         id: 'browser-interface-extension-delete-tab',
-        label: 'Delete Tab',
+        label: 'Delete tab',
         style: 'destructive',
-        actions: [{type: 'command', command: 'browser-interface-plugin:delete-tab'}],
+        actions: [{type: 'command', command: 'browser-interface:delete-tab'}],
       },
     ]
 
@@ -67,7 +70,7 @@ export default class BrowserInterface extends Plugin {
   setUpCommands() {
     this.addCommand({
       id: 'open-window',
-      name: 'Open Window',
+      name: 'Open window',
       editorCallback: (editor: Editor, view: MarkdownView) => {
         const directory = this.getBrowserDirectory()
         const tabs = getTabsFromMarkdown(editor.getValue())
@@ -78,7 +81,7 @@ export default class BrowserInterface extends Plugin {
 
     this.addCommand({
       id: 'open-tab',
-      name: 'Open Tab',
+      name: 'Open tab',
       editorCallback: (editor: Editor) => {
         const lineNum = editor.getCursor().line
         const lineText = editor.getLine(lineNum)
@@ -94,7 +97,7 @@ export default class BrowserInterface extends Plugin {
 
     this.addCommand({
       id: 'delete-tab',
-      name: 'Delete Tab',
+      name: 'Delete tab',
       editorCallback: (editor: Editor) => {
         const lineNum = editor.getCursor().line
         const lineText = editor.getLine(lineNum)

@@ -1,6 +1,6 @@
 {
   "name": "obsidian-browser-interface-plugin",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A plugin for Obsidian that allows you to interact with the browser",
   "main": "main.js",
   "scripts": {

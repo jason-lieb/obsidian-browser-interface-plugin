@@ -1,5 +1,5 @@
 import {App, Notice, PluginSettingTab, Setting} from 'obsidian'
-import BrowserInterface from 'main'
+import BrowserInterface from './main'
 import {isDirectoryValid} from './utils'
 
 export class BrowserInterfaceSettingTab extends PluginSettingTab {
@@ -24,7 +24,7 @@ export class BrowserInterfaceSettingTab extends PluginSettingTab {
         .addText(text => text.setValue(this.plugin.settings.browserDirectory ?? ''))
         .setDisabled(true)
       directorySetting.addButton(button => {
-        button.setButtonText('Clear Directory').onClick(async () => {
+        button.setButtonText('Clear directory').onClick(async () => {
           this.plugin.tearDownQueue()
           this.plugin.settings.browserDirectory = undefined
           await this.plugin.saveSettings()
@@ -42,7 +42,7 @@ export class BrowserInterfaceSettingTab extends PluginSettingTab {
             })
         )
         .addButton(button => {
-          button.setButtonText('Set Directory').onClick(async () => {
+          button.setButtonText('Set directory').onClick(async () => {
             if (this.plugin.settings.browserDirectory === undefined) return
             const directoryIsValid = isDirectoryValid(this.plugin.settings.browserDirectory)
             if (!directoryIsValid) {
