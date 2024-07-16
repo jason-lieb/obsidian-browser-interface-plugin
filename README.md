@@ -10,17 +10,19 @@ If there is interest in a firefox-supported extension, one might be created in t
 
 ### Installation
 
-Until the obsidian plugin is approved, the only way to install it will be manually building it.
+1. Install from community plugins in Obsidian settings.
 
-1. It is recommended to install the `obsidian-meta-bind-plugin` (link: [here](https://github.com/mProjectsCode/obsidian-meta-bind-plugin)) before installing this plugin.
+2. Install the chrome extension from the [chrome web store](https://chromewebstore.google.com/detail/obsidian-browser-interfac/eciohhdfhkkihkiiefldkejohdoghogo?pli=1).
 
-2. Clone this repository to your local machine in your obsidian vault in the `.obsidian/plugins/` folder using `git clone https://github.com/jason-lieb/obsidian-browser-interface-plugin.git`.
+3. If you are using chromium or brave, enable these 3 flags at chrome://flags or brave://flags, respectively.
 
-3. Install the dependencies with `npm i`
+  - #file-system-access-api
 
-4. Build the project with `npm run build`
+  - #file-system-access-persistant-permission
 
-5. Set up settings in obsidian.
+  - #file-system-observer
+
+4. Set the directory in obsidian plugin settings and in the extension.
 
 ### Limitations
 
